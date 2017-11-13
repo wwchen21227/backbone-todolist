@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Backbone.js Todos</title>
+  <link rel="stylesheet" href="/css/todos.css">
+</head>
+
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" display="none" version="1.1">
+      <defs>
+        <symbol id="icon-mode_edit" viewBox="0 0 24 24">
+          <title>edit</title>
+          <path d="M20.719 7.031l-1.828 1.828-3.75-3.75 1.828-1.828c0.375-0.375 1.031-0.375 1.406 0l2.344 2.344c0.375 0.375 0.375 1.031 0 1.406zM3 17.25l11.063-11.063 3.75 3.75-11.063 11.063h-3.75v-3.75z"></path>
+        </symbol>
+        <symbol id="icon-delete" viewBox="0 0 24 24">
+          <title>delete</title>
+          <path d="M18.984 3.984v2.016h-13.969v-2.016h3.469l1.031-0.984h4.969l1.031 0.984h3.469zM6 18.984v-12h12v12c0 1.078-0.938 2.016-2.016 2.016h-7.969c-1.078 0-2.016-0.938-2.016-2.016z"></path>
+        </symbol>
+        <symbol id="icon-control_point" viewBox="0 0 24 24">
+          <title>control_point</title>
+          <path d="M12 20.016c4.406 0 8.016-3.609 8.016-8.016s-3.609-8.016-8.016-8.016-8.016 3.609-8.016 8.016 3.609 8.016 8.016 8.016zM12 2.016c5.531 0 9.984 4.453 9.984 9.984s-4.453 9.984-9.984 9.984-9.984-4.453-9.984-9.984 4.453-9.984 9.984-9.984zM12.984 6.984v4.031h4.031v1.969h-4.031v4.031h-1.969v-4.031h-4.031v-1.969h4.031v-4.031h1.969z"></path>
+        </symbol>
+        <symbol id="icon-search" viewBox="0 0 24 24">
+          <title>search</title>
+          <path d="M9.516 14.016c2.484 0 4.5-2.016 4.5-4.5s-2.016-4.5-4.5-4.5-4.5 2.016-4.5 4.5 2.016 4.5 4.5 4.5zM15.516 14.016l4.969 4.969-1.5 1.5-4.969-4.969v-0.797l-0.281-0.281c-1.125 0.984-2.625 1.547-4.219 1.547-3.609 0-6.516-2.859-6.516-6.469s2.906-6.516 6.516-6.516 6.469 2.906 6.469 6.516c0 1.594-0.563 3.094-1.547 4.219l0.281 0.281h0.797z"></path>
+        </symbol>
+      </defs>
+    </svg>
+  <header>
+    <h1>Todos</h1>
+  </header>
+  <div id="todoapp" data-tasks="0">
+    <div class="panel">
+        <section class="ts-input-box">
+          <input id="new-todo" type="text" placeholder="Title">
+          <textarea id="notes" placeholder="Add a notes."></textarea>
+          <div class="actions-wrapper actions-wrapper--right">
+            <a id="btnCancel" href="#" class="cancel-link">Cancel</a>
+            <button id="btnAdd" class="btn btn-primary">Save</button>
+          </div>
+        </section>
+       
+      <div class="ts-main-container">
+        <section class="ts-header">
+          <div class="js-markAll">
+            <div class="checkbox-holder">
+              <input type="checkbox" class="toggle" id="toggle-all" name="check" />
+              <label for="toggle-all"></label>
+            </div>
+            <label for="toggle-all">Mark all as complete</label>
+          </div>
+          <div class="ts-search-container">
+              <input id="txtFilter" type="text" placeholder="filter by title or description">
+              <span class="ts-search-icon-wrapper">
+                <svg class="icon icon-search"><use xlink:href="#icon-search"></use></svg> 
+              </span>
+          </div>
+        </section>
+        
+        <section id="main">
+          <ul id="todo-list"></ul>
+        </section>
+        <div class="ts-no-result">Loading...</div>
+        <div class="ts-add-wrapper">
+            <a id="btnExpand" href="#" class="">
+              <svg class="icon icon-control_point"><use xlink:href="#icon-control_point"></use></svg> <span>Add a to do</span></a>
+          </div>
+        <footer>
+          <div class="todo-count">
+            <b></b> item left</div>
+        </footer>
+      </div>
+    </div>
+    <div id="activity-container" class="ts-activity-container">
+      <h3>Activities</h3>
+        <ul id="activity-list"></ul>
+      </div>
+  </div>
+  <div id="credits">
+    Created by
+    <br>
+    <a href="http://jgn.me/">Jérôme Gravel-Niquet</a>.
+    <br>Rewritten by: <a href="http://addyosmani.github.com/todomvc">TodoMVC</a>.
+    <br><br>
+    Modified by
+    <br>
+    <a href="#">Chen Weng Wei</a>.
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js"></script>
+  <script src="http://localtodos.com/backbone.localStorage.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/validation.js"></script>
+  <script src="/js/sanitizer.js"></script>
+  <script src="/js/auditingService.js"></script>
+  <script src="/js/mediator.js"></script>
+  <script src="/js/todos.js"></script>
+
+  <!-- Templates -->
+
+  <script type="text/template" id="item-template">
+    <div class="view">
+      <div>
+      <div class="checkbox-holder">
+          <input type="checkbox" class="toggle" id="checkbox_<%- order%>" name="check" <%= done ? 'checked="checked"' : '' %>/>
+          <label for="checkbox_<%- order%>"></label>
+      </div>
+    </div>
+      <div class="ts-content">
+        <h5><%- title %></h5>
+        <small><%- notes%></small>
+        <span class="ts-timestamp"><%- formatDate(createdDate) %></span>
+      </div>
+      <div class="task-actions task-actions--show-on-hover float-right">
+        <button href="javascript:;" class="btn btnEdit">
+          <svg class="icon icon-mode_edit"><use xlink:href="#icon-mode_edit"></use></svg>
+        </button>
+        <button href="javascript:;" class="btn destroy">
+          <svg class="icon icon-delete"><use xlink:href="#icon-delete"></use></svg>
+        </button>
+      </div>
+    </div>
+    <div class="edit">
+      <input class="js-titleInput" type="text" value="<%- title %>" />
+      <textarea class="js-notesInput" placeholder="Add a notes."><%- notes %></textarea>
+      <div class="actions-wrapper actions-wrapper--right">
+        <span class="ts-timestamp">Last updated: <%- formatLastModifiedDate(lastModifiedDate) %></span>
+        <a href="#" class="js-btnCancel cancel-link">Cancel</a>
+        <button class="js-btnSave btn btn-primary">Save</button>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/template" id="stats-template">
+    <% if (done) { %>
+      <a id="clear-completed">Clear <%= done %> completed <%= done == 1 ? 'item' : 'items' %></a>
+    <% } %>
+    <div class="todo-count"><b><%= remaining %></b> <%= remaining == 1 ? 'item' : 'items' %> left</div>
+  </script>
+
+  <script type="text/template" id="activities-template">
+    <div>
+      <span class="ts-activity-action <%- action%>"><%- action%></span>
+      <span class="ts-activity-title"><%- task.title%></span>
+    </div>
+  </script>
+</body>
+</html>
